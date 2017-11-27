@@ -33,7 +33,7 @@ class Basic(db.Model):
 	def serialize(self):
 		return{
 			'id' : self.id,
-			'testcol' : self.testcol
+			'testcol' : self.testcol,
 		}
 
 	def __init__(self):
@@ -58,7 +58,7 @@ def homepage():
 def test():
 
 	bas = db.session.query(Basic)
-	return jsonify(json_list = bas.all())
+	return jsonify(Basics = [b.serialize for b in bas])
 
 
 if __name__ == '__main__':
