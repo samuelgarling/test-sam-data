@@ -58,7 +58,7 @@ def homepage():
 def test():
 
 	bas = db.session.query(Basic)
-	return bas
+	return json.dumps(bas)
 
 
 if __name__ == '__main__':
