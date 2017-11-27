@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 import sys
 import json
 import os
+import psycopg2
 from datetime import datetime
 from flask_heroku import Heroku
 app = Flask(__name__)
