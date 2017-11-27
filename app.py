@@ -58,7 +58,7 @@ def homepage():
 def test():
 
 	bas = db.session.query(Basic)
-	return jsonify(Basic = [Basic.serialize for basic in bas])
+	return bas
 
 
 if __name__ == '__main__':
