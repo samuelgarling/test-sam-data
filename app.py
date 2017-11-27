@@ -58,13 +58,13 @@ def homepage():
 def test():
 
 	bas = db.session.query(Basic)
-	return jsonify(Basics = [b.serialize for b in bas])
+	return "{'success':True}), 200, {'ContentType':'application/json'}" + jsonify(Basics = [b.serialize for b in bas])
 
 @app.route('/testapi/<basicId>', methods=['GET'])
 def testId(basicId):
 
 	bas = db.session.query(Basic).filter_by(id=basicId)
-	return jsonify(Basics = [b.serialize for b in bas])
+	return "{'success':True}), 200, {'ContentType':'application/json'}" + jsonify(Basics = [b.serialize for b in bas])
 
 
 if __name__ == '__main__':
