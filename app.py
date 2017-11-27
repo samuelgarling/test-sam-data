@@ -60,13 +60,13 @@ def test():
 	bas = db.session.query(Basic)
 	return jsonify(Basics = [b.serialize for b in bas]), 200
 
-@app.route('/testapi/<basicId>', methods=['GET'])
+@app.route('/testapi/id/<basicId>', methods=['GET'])
 def testId(basicId):
 
 	bas = db.session.query(Basic).filter_by(id=basicId)
 	return jsonify(Basics = [b.serialize for b in bas]), 200
 
-@app.route('/testapi/<basicTestcol>', methods=['GET'])
+@app.route('/testapi/testcol/<basicTestcol>', methods=['GET'])
 def testId(basicTestcol):
 
 	bas = db.session.query(Basic).filter_by(testcol=basicTestcol)
