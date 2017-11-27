@@ -66,6 +66,12 @@ def testId(basicId):
 	bas = db.session.query(Basic).filter_by(id=basicId)
 	return jsonify(Basics = [b.serialize for b in bas]), 200
 
+@app.route('/testapi/<basicTestcol>', methods=['GET'])
+def testId(basicTestcol):
+
+	bas = db.session.query(Basic).filter_by(testcol=basicTestcol)
+	return jsonify(Basics = [b.serialize for b in bas]), 200
+
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=True)
