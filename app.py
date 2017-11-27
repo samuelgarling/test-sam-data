@@ -1,9 +1,10 @@
-from flask import Flask, request
-from sqlalchemy import create_engine
+from flask import Flask, render_template, url_for
 from flask_sqlalchemy import SQLAlchemy
-from json import dumps
-from flask_jsonify import jsonify
+import sys
+import json
+from flask_heroku import Heroku
 app = Flask(__name__)
+
 
 
 DATABASE_URL = os.environ.get('DATABASE_URL')
@@ -14,7 +15,10 @@ DATABASE_DB = os.environ.get('DATABASE_DB')
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # silence the deprecation warning
 
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+heroku = Heroku(app)
 db = SQLAlchemy(app)
+
 
 class Basic(db.Model):
 	__tablename__ = 'basic'
@@ -49,7 +53,7 @@ def homepage():
 @app.route('/testapi', methods=['GET'])
 def test():
 
-	bas = db.query.all(Basic)
+	bas = db.session.query.all(Basic)
 	return jsonify(Basic = [Basic.serialize for basic in bas])
 
 
