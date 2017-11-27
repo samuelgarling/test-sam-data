@@ -1,8 +1,8 @@
 from flask import Flask, request
 from sqlalchemy import create_engine
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 from json import dumps
-from flask.ext.jsonpify import jsonify
+from flask_jsonify import jsonify
 app = Flask(__name__)
 
 
