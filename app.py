@@ -1,40 +1,65 @@
-from flask import Flask, request
-from flask_restful import Resource, Api
-from sqlalchemy import create_engine
-from flask.ext.sqlalchemy import SQLAlchemy
-from json import dumps
-from flask.ext.jsonpify import jsonify
-
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+import os
+from datetime import datetime
+import json
+from sqlalchemy import create_engine, func
+from sqlalchemy.orm import sessionmaker
 app = Flask(__name__)
-api = Api(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://test-sam-data.herokuapp.com/db'
+
+
+DATABASE_URL = os.environ.get('DATABASE_URL')
+DATABASE_USER = os.environ.get('DATABASE_USER')
+DATABASE_PW = os.environ.get('DATABASE_PW')
+DATABASE_DB = os.environ.get('DATABASE_DB')
+
+app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # silence the deprecation warning
+
 db = SQLAlchemy(app)
+
+engine = create_engine(DATABASE_URL)
+Base.metadata.bind = engine
+ 
+DBSession = sessionmaker(bind=engine)
+session = DBSession()
+
+class Basic(db.Model):
+	__tablename__ = 'basic'
+	id = db.Column(db.Integer, primary_key=True)
+	testcol = db.Column(db.String(1000), unique=False, nullable=True)
+
+	@property
+	def serialize(self):
+		return{
+			'id' : self.id,
+			'testcol' : self.testcol
+		}
+
+	def __init__(self):
+		self.id = self.id
+		self.testcol = self.testcol
+
+	def __repr__(self):
+		return '<testcol {}>'.format(self.testcol)
 
 @app.route('/')
 def homepage():
     the_time = datetime.now().strftime("%A, %d %b %Y %l:%M %p")
-    b = Basic("firstrunhopefullythisworks")
-    db.session.add(b)
-    db.session.commit()
-
-    c = Basic.query.all()
 
     return """
     <h1>Hello Miguel</h1>
-    <p>{tc}</p>
     <p>It is currently {time}.</p>
 
     <img src="http://loremflickr.com/600/400">
-    """.format(time=the_time, tc=c)
+    """.format(time=the_time)
 
-class Basic(db.Model):
-	testcol = db.Column(db.String(1000))
+@app.route('/testapi', methods=['GET'])
+def test():
 
-	def __init__(self, testcol):
-        self.testcol = testcol
+	bas = session.query.all(Basic)
+	return jsonify(Basic = [Basic.serialize for basic in bas])
 
-    def __repr__(self):
-        return '<testcol %r>' % self.testcol
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=True)
