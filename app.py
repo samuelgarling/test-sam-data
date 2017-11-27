@@ -2,6 +2,7 @@ from flask import Flask, render_template, url_for
 from flask_sqlalchemy import SQLAlchemy
 import sys
 import json
+import os
 from flask_heroku import Heroku
 app = Flask(__name__)
 
