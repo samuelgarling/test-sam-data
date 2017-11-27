@@ -55,7 +55,7 @@ def homepage():
 @app.route('/testapi', methods=['GET'])
 def test():
 
-	bas = db.session.query.all(Basic)
+	bas = db.session.query(Basic)
 	return jsonify(Basic = [Basic.serialize for basic in bas])
 
 
