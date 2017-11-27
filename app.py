@@ -17,12 +17,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # silence the deprecation w
 
 db = SQLAlchemy(app)
 
-engine = create_engine(DATABASE_URL)
-Base.metadata.bind = engine
- 
-DBSession = sessionmaker(bind=engine)
-session = DBSession()
-
 class Basic(db.Model):
 	__tablename__ = 'basic'
 	id = db.Column(db.Integer, primary_key=True)
@@ -56,7 +50,7 @@ def homepage():
 @app.route('/testapi', methods=['GET'])
 def test():
 
-	bas = session.query.all(Basic)
+	bas = db.query.all(Basic)
 	return jsonify(Basic = [Basic.serialize for basic in bas])
 
 
