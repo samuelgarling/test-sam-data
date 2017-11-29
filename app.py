@@ -61,7 +61,7 @@ def test():
 	return jsonify(Basics = [b.serialize for b in bas]), 200
 
 @app.route('/testapipost', methods=['GET'])
-def test():
+def testpost():
 	newCategory = Basic(testcol="testsuccess")
 	db.session.add(newCategory)
 	db.session.commit()
