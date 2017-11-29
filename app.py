@@ -60,6 +60,14 @@ def test():
 	bas = db.session.query(Basic)
 	return jsonify(Basics = [b.serialize for b in bas]), 200
 
+@app.route('/testapipost', methods=['POST'])
+def test():
+	newCategory = Basic(testcol="testsuccess")
+	session.add(newCategory)
+	session.commit()
+
+
+
 @app.route('/testapi/<basicId>', methods=['GET'])
 def testId(basicId):
 
