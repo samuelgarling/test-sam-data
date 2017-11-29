@@ -62,7 +62,7 @@ def test():
 
 @app.route('/testapipost', methods=['GET'])
 def testpost():
-	newCategory = Basic(testcol="testsuccess")
+	newCategory = Basic()
 	db.session.add(newCategory)
 	db.session.commit()
 	bas = db.session.query(Basic)
