@@ -102,7 +102,7 @@ def testId(basicId):
 
 @app.route('/testSFMCpipe/auth')
 def SFMCAuthTest():
-	current_auth = db.session.query(sfmc_access).order_by(sfmc_access.expiry_datetime.desc()).limit(1)
+	current_auth = db.session.query(sfmc_access).order_by(sfmc_access.expiry_datetime.desc()).first()
 
 	if datetime.utcnow() < current_auth.expiry_datetime:
 		token = current_auth
