@@ -7,19 +7,16 @@ import os
 import psycopg2
 from datetime import datetime
 from flask_heroku import Heroku
+import app-sfmc-functions
+
 app = Flask(__name__)
 
-
-
 DATABASE_URL = os.environ.get('DATABASE_URL')
-DATABASE_USER = os.environ.get('DATABASE_USER')
-DATABASE_PW = os.environ.get('DATABASE_PW')
-DATABASE_DB = os.environ.get('DATABASE_DB')
 
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # silence the deprecation warning
-
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+
 heroku = Heroku(app)
 db = SQLAlchemy(app)
 
@@ -74,6 +71,11 @@ def testId(basicId):
 
 	bas = db.session.query(Basic).filter_by(id=basicId)
 	return jsonify(Basics = [b.serialize for b in bas]), 200
+
+@app.route('/testSFMCpipe/auth')
+def SFMCAuthTest():
+	SFMC_authenticate()
+	return jsonify(token=os.environ.get('SFMC_ACCESS_TOKEN')), 200
 
 
 if __name__ == '__main__':
