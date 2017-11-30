@@ -102,7 +102,7 @@ def testId(basicId):
 @app.route('/testSFMCpipe/auth')
 def SFMCAuthTest():
 	token = app_sfmc_functions.SFMC_authenticate()
-	tokenToAdd = sfmc_access(access_token=token.authToken,expires_in=token.expiresIn)
+	tokenToAdd = sfmc_access(access_token=token['authToken'],expires_in=token['expiresIn'])
 	db.session.add(TokenToAdd)
 	db.session.commit()
 	return jsonify(token=token.authToken,expires_in=token.expiresIn), 200
