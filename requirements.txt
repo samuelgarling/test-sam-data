@@ -4,3 +4,4 @@ flask_heroku
 SQLAlchemy
 gunicorn
 psycopg2
+requests

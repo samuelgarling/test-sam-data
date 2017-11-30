@@ -7,7 +7,7 @@ import os
 import psycopg2
 from datetime import datetime
 from flask_heroku import Heroku
-import app-sfmc-functions
+import app_sfmc_functions
 
 app = Flask(__name__)
 
