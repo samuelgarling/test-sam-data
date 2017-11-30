@@ -46,8 +46,8 @@ class sfmc_access(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	access_token = db.Column(db.String(255), nullable=False)
 	expires_in = db.Column(db.Integer, nullable=False)
-	begin_datetime = db.Column(db.DateTime, nullable=False)
-	expiry_datetime = db.Column(db.DateTime, nullable=False)
+	begin_datetime = db.Column(db.DateTime, nullable=True)
+	expiry_datetime = db.Column(db.DateTime, nullable=True)
 
 	@property
 	def serialize(self):
@@ -74,7 +74,7 @@ def homepage():
     the_time = datetime.now().strftime("%A, %d %b %Y %l:%M %p")
 
     return """
-    <h1>Hello Miguel</h1>
+    <h1>Hello Sam</h1>
     <p>It is currently {time}.</p>
 
     <img src="http://loremflickr.com/600/400">
@@ -102,7 +102,7 @@ def testId(basicId):
 
 @app.route('/testSFMCpipe/auth')
 def SFMCAuthTest():
-	current_auth = db.session.query(sfmc_access).filter_by(sfmc_access.expiry_datetime > datetime.utcnow()).first()
+	current_auth = db.session.query(sfmc_access).filter(sfmc_access.expiry_datetime > datetime.utcnow()).first()
 
 	if len(current_auth) == 1:
 		token = current_auth
