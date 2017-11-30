@@ -8,6 +8,8 @@ SFMC_HOST_URL = os.environ.get('SFMC_HOST_ENDPOINT')
 SFMC_CLIENT_ID = os.environ.get('SFMC_CLIENT_ID')
 SFMC_CLIENT_SECRET = os.environ.get('SFMC_CLIENT_SECRET')
 
+DATABASE_URL = os.environ.get('DATABASE_URL')
+
 def SFMC_authenticate():
 
 	headers = {'Content-type': 'application/json'}
@@ -20,5 +22,8 @@ def SFMC_authenticate():
 	if responseStatus == requests.codes.ok:
 		responseData = json.loads(response.text)
 		authToken = responseData['accessToken']
-		os.environ['SFMC_ACCESS_TOKEN'] = authToken
+		expiresIn = responseData['expiresIn']
+		return {'authToken':authToken,
+				'expiresIn':expiresIn
+				}
 

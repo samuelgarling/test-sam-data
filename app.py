@@ -8,6 +8,7 @@ import psycopg2
 from datetime import datetime
 from flask_heroku import Heroku
 import app_sfmc_functions
+import db_ops
 
 app = Flask(__name__)
 
@@ -18,7 +19,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
 heroku = Heroku(app)
-db = SQLAlchemy(app)
+
 
 
 class Basic(db.Model):
@@ -40,6 +41,34 @@ class Basic(db.Model):
 	def __repr__(self):
 		return '<testcol {}>'.format(self.testcol)
 
+class sfmc_access(db.Model):
+	__tablename__ = 'sfmc_access'
+	id = db.Column(db.Integer, primary_key=True)
+	access_token = db.Column(db.String(255), nullable=False)
+	expires_in = db.Column(db.Integer, nullable=False)
+	begin_datetime = db.Column(db.DateTime, nullable=False)
+	expiry_datetime = db.Column(db.DateTime, nullable=False)
+
+	@property
+	def serialize(self):
+		return{
+			'id' : self.id,
+			'access_token' : self.access_token,
+			'expires_in' : self.expires_in,
+			'begin_datetime' : self.begin_datetime,
+			'expiry_datetime' : self.expiry_datetime,
+		}
+
+	def __init__(self):
+		self.id = self.id
+		self.access_token = self.access_token
+		self.expires_in = self.expires_in
+		self.begin_datetime = self.begin_datetime
+		self.expiry_datetime = self.expiry_datetime
+
+	def __repr__(self):
+		return '<token {}>'.format(self.access_token)
+
 @app.route('/')
 def homepage():
     the_time = datetime.now().strftime("%A, %d %b %Y %l:%M %p")
@@ -58,8 +87,8 @@ def test():
 
 @app.route('/testapipost', methods=['GET'])
 def testpost():
-	newCategory = Basic()
-	db.session.add(newCategory)
+	newBasic = Basic()
+	db.session.add(newBasic)
 	db.session.commit()
 	bas = db.session.query(Basic)
 	return jsonify(Basics = [b.serialize for b in bas]), 200
@@ -73,8 +102,11 @@ def testId(basicId):
 
 @app.route('/testSFMCpipe/auth')
 def SFMCAuthTest():
-	app_sfmc_functions.SFMC_authenticate()
-	return jsonify(token=os.environ.get('SFMC_ACCESS_TOKEN')), 200
+	token = app_sfmc_functions.SFMC_authenticate()
+	tokenToAdd = sfmc_access(access_token=token.authToken,expires_in=token.expiresIn)
+	db.session.add(TokenToAdd)
+	db.session.commit()
+	return jsonify(token=token.authToken,expires_in=token.expiresIn), 200
 
 
 if __name__ == '__main__':
