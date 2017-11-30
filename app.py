@@ -18,7 +18,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
 heroku = Heroku(app)
-
+db = SQLAlchemy(app)
 
 
 class Basic(db.Model):
