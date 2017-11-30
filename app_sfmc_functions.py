@@ -19,6 +19,6 @@ def SFMC_authenticate():
 	responseStatus = response.status_code
 	if responseStatus == requests.codes.ok:
 		responseData = json.loads(response.text)
-		authToken = responseData[accessToken]
+		authToken = responseData['accessToken']
 		os.environ.set('SFMC_ACCESS_TOKEN',authToken)
 
