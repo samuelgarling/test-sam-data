@@ -53,7 +53,6 @@ def homepage():
 
 @app.route('/testapi', methods=['GET'])
 def test():
-
 	bas = db.session.query(Basic)
 	return jsonify(Basics = [b.serialize for b in bas]), 200
 
@@ -74,7 +73,7 @@ def testId(basicId):
 
 @app.route('/testSFMCpipe/auth')
 def SFMCAuthTest():
-	SFMC_authenticate()
+	app_sfmc_functions.SFMC_authenticate()
 	return jsonify(token=os.environ.get('SFMC_ACCESS_TOKEN')), 200
 
 
