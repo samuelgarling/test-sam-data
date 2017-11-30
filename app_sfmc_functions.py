@@ -23,7 +23,5 @@ def SFMC_authenticate():
 		responseData = json.loads(response.text)
 		authToken = responseData['accessToken']
 		expiresIn = responseData['expiresIn']
-		return {'authToken':authToken,
-				'expiresIn':expiresIn
-				}
+		return {'authToken':authToken,'expiresIn':expiresIn}
 
