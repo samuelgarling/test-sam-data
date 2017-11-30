@@ -105,7 +105,7 @@ def SFMCAuthTest():
 	tokenToAdd = sfmc_access()
 	tokenToAdd.access_token=token['authToken']
 	tokenToAdd.expires_in=token['expiresIn']
-	db.session.add(TokenToAdd)
+	db.session.add(tokenToAdd)
 	db.session.commit()
 	return jsonify(token=token.authToken,expires_in=token.expiresIn), 200
 
