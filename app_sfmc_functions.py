@@ -1,5 +1,6 @@
 import requests
 import json
+import os
 
 SFMC_AUTH_URL = os.environ.get('ET_AUTH_URL')
 SFMC_HOST_URL = os.environ.get('SFMC_HOST_ENDPOINT')
