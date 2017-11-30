@@ -104,7 +104,7 @@ def testId(basicId):
 def SFMCAuthTest():
 	current_auth = db.session.query(sfmc_access).order_by(sfmc_access.id.desc()).limit(1)
 
-	if current_auth.length == 1:
+	if db.session.query(sfmc_access).order_by(sfmc_access.id.desc()).limit(1).count() == 1:
 		token = current_auth
 	else:
 		token = app_sfmc_functions.SFMC_authenticate()
