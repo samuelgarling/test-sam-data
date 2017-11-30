@@ -8,7 +8,6 @@ import psycopg2
 from datetime import datetime
 from flask_heroku import Heroku
 import app_sfmc_functions
-import db_ops
 
 app = Flask(__name__)
 
