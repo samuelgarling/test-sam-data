@@ -102,14 +102,22 @@ def testId(basicId):
 
 @app.route('/testSFMCpipe/auth')
 def SFMCAuthTest():
-	token = app_sfmc_functions.SFMC_authenticate()
-	tokenToAdd = sfmc_access()
-	tokenToAdd.access_token=token['authToken']
-	tokenToAdd.expires_in=token['expiresIn']
-	tokenToAdd.begin_datetime = datetime.utcnow()
-	db.session.add(tokenToAdd)
-	db.session.commit()
-	return jsonify(token=tokenToAdd.access_token,expires_in=tokenToAdd.expires_in, begin_datetime=datetime.utcnow()), 200
+	current_auth = db.session.query(sfmc_access).order_by(desc(sfmc_access.expiry_datetime)).limit(1)
+
+	if datetime.utcnow() < current_auth.expiry_datetime:
+		token = current_auth
+	else:
+		token = app_sfmc_functions.SFMC_authenticate()
+
+		tokenToAdd = sfmc_access()
+		tokenToAdd.access_token=token['authToken']
+		tokenToAdd.expires_in=token['expiresIn']
+		tokenToAdd.begin_datetime = datetime.utcnow()
+		db.session.add(tokenToAdd)
+		db.session.commit()
+
+		
+	return jsonify(token=token.access_token,expires_in=token.expires_in), 200
 
 
 if __name__ == '__main__':
